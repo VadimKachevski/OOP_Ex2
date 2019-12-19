@@ -1,7 +1,10 @@
 package algorithms;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
+import dataStructure.DGraph;
 import dataStructure.graph;
 import dataStructure.node_data;
 /**
@@ -12,12 +15,16 @@ import dataStructure.node_data;
  */
 public class Graph_Algo implements graph_algorithms{
 
+	
+	
+	graph graph;
+	
+	
 	@Override
 	public void init(graph g) {
-		// TODO Auto-generated method stub
+		this.graph =g;
 		
 	}
-
 	@Override
 	public void init(String file_name) {
 		// TODO Auto-generated method stub
@@ -26,10 +33,22 @@ public class Graph_Algo implements graph_algorithms{
 
 	@Override
 	public void save(String file_name) {
-		// TODO Auto-generated method stub
-		
+	
+		try
+		{
+			FileOutputStream f = new FileOutputStream(file_name);
+			ObjectOutputStream o = new ObjectOutputStream(f);
+			o.writeObject(this.graph);
+			o.close();
+			f.close();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
-
+	
+	
+	
 	@Override
 	public boolean isConnected() {
 		// TODO Auto-generated method stub
