@@ -1,9 +1,11 @@
 package dataStructure;
 
 
+import java.io.Serializable;
+
 import utils.Point3D;
 
-public class vertex implements node_data {
+public class vertex implements node_data,Serializable {
 
 	int key;
 	Point3D location;

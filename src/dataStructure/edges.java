@@ -1,6 +1,8 @@
 package dataStructure;
 
-public class edges implements edge_data {
+import java.io.Serializable;
+
+public class edges implements edge_data,Serializable {
 
 	static int countEdges = 0;
 	int srcVertex;

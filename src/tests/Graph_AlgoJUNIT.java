@@ -28,7 +28,7 @@ class Graph_AlgoJUNIT {
 
 	@Test
 	void testInitString() {
-		fail("Not yet implemented");
+		a.init("testSave.txt");
 	}
 
 	@Test
@@ -38,7 +38,18 @@ class Graph_AlgoJUNIT {
 
 	@Test
 	void testIsConnected() {
-		fail("Not yet implemented");
+		graph s = new DGraph();
+		s.addNode(new vertex(1));
+		s.addNode(new vertex(2));
+		s.addNode(new vertex(3));
+		s.addNode(new vertex(4));
+		s.connect(1, 2, 0);
+		s.connect(2, 3, 0);
+		s.connect(3, 4, 0);
+		s.connect(4, 2, 0);
+		Graph_Algo e = new Graph_Algo();
+		e.init(s);
+		assertEquals(false, e.isConnected());
 	}
 
 	@Test
