@@ -109,16 +109,74 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 		}
 	}
 	
+	
+	private void cleanTagsSetweight()
+	{
+		Collection<node_data> s = graph.getV();
+		for (node_data node_data : s) {
+			node_data.setTag(0);
+			node_data.setWeight(Integer.MAX_VALUE);
+			node_data.setInfo("");
+		}
+	}
+	
+	private void Dijksta(int src)
+	{
+		cleanTagsSetweight();
+		
+		node_data minNodeNotTouched = graph.getNode(src);
+		minNodeNotTouched.setWeight(0);
+		node_data currMin = null;
+		while(minNodeNotTouched != null)
+		{
+			minNodeNotTouched.setTag(1);
+			Collection<edge_data> edges = graph.getE(minNodeNotTouched.getKey());
+			currMin = null;
+			for (edge_data edge_data : edges) {
+				node_data currNode = graph.getNode(edge_data.getDest());
+				if(currNode.getWeight() > minNodeNotTouched.getWeight() + edge_data.getWeight())
+				{
+					currNode.setWeight(minNodeNotTouched.getWeight() + edge_data.getWeight());
+					currNode.setInfo(minNodeNotTouched.getKey()+"");
+					if(currMin == null && currNode.getTag() == 0)
+					{
+						currMin = currNode;
+					}
+					else
+					{
+						if(currMin.getWeight() > currNode.getWeight() && currNode.getTag() == 0);
+						{
+							currMin = currNode;
+						}
+					}
+				}
+			}
+			minNodeNotTouched = currMin;
+		}
+	}
+	
+	
 	@Override
 	public double shortestPathDist(int src, int dest) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		Dijksta(src);
+		return graph.getNode(dest).getWeight();
 	}
-
+	
+	
+	
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
-		// TODO Auto-generated method stub
-		return null;
+		Dijksta(src);
+		List<node_data> ans = new ArrayList<node_data>();
+		node_data currNode = graph.getNode(dest);
+		while(!currNode.getInfo().isEmpty())
+		{
+			ans.add(0, currNode);
+			currNode = graph.getNode(Integer.parseInt(currNode.getInfo()));
+		}
+		ans.add(0, currNode);
+		return ans;
 	}
 
 	@Override
