@@ -24,14 +24,14 @@ public class DGraph implements graph,Serializable{
 	
 	@Override
 	public node_data getNode(int key) {
-		MC++;
+		//MC++;
 		return vertexs.get(key);
 		
 	}
 
 	@Override
 	public edge_data getEdge(int src, int dest) {
-		MC++;
+		//MC++;
 		node_data vert = vertexs.get(src);
 		edge_data edg = edgesPerVertex.get(vert).get(dest);
 		return edg;
@@ -58,13 +58,13 @@ public class DGraph implements graph,Serializable{
 
 	@Override
 	public Collection<node_data> getV() {
-		MC++;
+		//MC++;
 		return vertexs.values();
 	}
 
 	@Override
 	public Collection<edge_data> getE(int node_id) {
-		MC++;
+		//MC++;
 		node_data vert = vertexs.get(node_id);
 		return edgesPerVertex.get(vert).values();
 	}
@@ -92,13 +92,13 @@ public class DGraph implements graph,Serializable{
 
 	@Override
 	public int nodeSize() {
-		MC++;
+		//MC++;
 		return vertexs.size();
 	}
 
 	@Override
 	public int edgeSize() {
-		MC++;
+		//MC++;
 		return edges.countEdges;
 	}
 

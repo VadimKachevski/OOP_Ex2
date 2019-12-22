@@ -14,6 +14,7 @@ import dataStructure.DGraph;
 import dataStructure.edge_data;
 import dataStructure.graph;
 import dataStructure.node_data;
+import dataStructure.vertex;
 /**
  * This empty class represents the set of graph-theory algorithms
  * which should be implemented as part of Ex2 - Do edit this class.
@@ -84,8 +85,7 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 		}
 		return true;
 	}
-	
-	public int isConnectedHelper(node_data n)
+	private int isConnectedHelper(node_data n)
 	{
 		if(n.getTag() == 1)
 		{
@@ -98,6 +98,50 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 			counter += isConnectedHelper(graph.getNode(edge_data.getDest()));
 		}
 		return counter;
+	}
+	
+	// Should be faster then the org algo
+	public boolean isConnectedNew()
+	{
+		Collection<node_data> s = graph.getV();
+		boolean firstNode = false;
+		node_data firstN;
+		boolean ansBool=true;
+		for (node_data node_data : s) {
+			if(firstNode == false)
+			cleanTags();
+			firstN = node_data;
+			int ans = isConnectedHelper(node_data);
+			if(ans != s.size())
+			{
+				return false;
+			}
+			else
+			{
+				ansBool = ansBool && isConnectedNewHelper(node_data, firstN);
+			}
+			
+		}
+		return ansBool;
+	}
+	public boolean isConnectedNewHelper(node_data n,node_data firstNode)
+	{
+		boolean found = false;
+		if(n == firstNode)
+		{
+			return true;
+		}
+		if(n.getTag() == 1)
+		{
+			return found;
+		}
+		n.setTag(1);
+		Collection<edge_data> edge = graph.getE(n.getKey());
+		for (edge_data edge_data : edge) {
+			found =found || isConnectedNewHelper(graph.getNode(edge_data.getDest()),firstNode);
+		}
+		//return counter;
+		return found;
 	}
 	
 	
@@ -181,14 +225,39 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<node_data> ans = new ArrayList<node_data>();
+		
+		int i = 0;
+		while(i<targets.size()-1)
+		{
+			if(i == 0)
+			{
+			ans.addAll(shortestPath(targets.get(i), targets.get(i+1)));
+			}
+			else
+			{
+				List<node_data> pre =shortestPath(targets.get(i), targets.get(i+1));
+				pre.remove(0);
+				ans.addAll(pre);
+			}
+			i++;
+		}
+		return ans;
 	}
-
+	
 	@Override
 	public graph copy() {
-		// TODO Auto-generated method stub
-		return null;
+		graph ans = new DGraph();
+		Collection<node_data> nodes = graph.getV();
+		for (node_data node_data : nodes) {
+			ans.addNode(new vertex(node_data));
+			Collection<edge_data> edges = graph.getE(node_data.getKey());
+			for (edge_data edge : edges) {
+				ans.connect(edge.getSrc(), edge.getDest(), edge.getWeight());
+			}
+		}
+		return ans;
 	}
 
 }
