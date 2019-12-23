@@ -3,11 +3,15 @@ import dataStructure.*;
 import utils.Point3D;
 import algorithms.*;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -27,7 +31,7 @@ public class g_GUI extends JFrame implements ActionListener  {
 	 */
 	private static final long serialVersionUID = -7377758160791730941L;
 	graph graph;
-	Graph_Algo GA;
+	//Graph_Algo GA;
 	public g_GUI(graph g)
 	{
 		this.graph = g;
@@ -44,7 +48,7 @@ public class g_GUI extends JFrame implements ActionListener  {
 	private void initGUI()
 	{
 		//JFrame j = new JFrame();
-		this.setSize(600, 600);
+		this.setSize(1000, 1000);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		MenuBar menuBar = new MenuBar();
@@ -69,6 +73,7 @@ public class g_GUI extends JFrame implements ActionListener  {
 		menu.add(item4);
 		menu.add(item5);
 		menu.add(item6);
+		
 
 	}
 
@@ -90,9 +95,15 @@ public class g_GUI extends JFrame implements ActionListener  {
 					g.drawString(node_data.getKey()+"", p.ix(), p.iy()-1);
 					Collection<edge_data> edges = graph.getE(node_data.getKey());
 					for (edge_data edge : edges) {
+						Graphics2D g2d = (Graphics2D)g;
+						Stroke bs = g2d.getStroke();
 						if(edge.getTag() == 999)
 						{
+							
+							edge.setTag(0);
+							g2d.setStroke(new BasicStroke(5));
 							g.setColor(Color.GREEN);
+							
 						}
 						else
 						{
@@ -109,6 +120,7 @@ public class g_GUI extends JFrame implements ActionListener  {
 							int yhalf = (((p.iy()+pd.iy())/2)+pd.iy())/2;
 							g.fillOval((xhalf+pd.ix())/2, (yhalf+pd.iy())/2, 5, 5);
 						}
+						g2d.setStroke(bs);
 					}
 				}
 			}
@@ -215,7 +227,5 @@ public class g_GUI extends JFrame implements ActionListener  {
 		default:
 			break;
 		}
-
 	}
-
 }

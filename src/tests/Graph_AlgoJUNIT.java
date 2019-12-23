@@ -3,7 +3,9 @@ package tests;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Random;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -139,6 +141,7 @@ class Graph_AlgoJUNIT {
 		s.addNode(new vertex(8));
 		s.connect(1, 2, 1);
 		s.connect(1, 3, 7);
+		s.connect(3, 1, 7);
 		s.connect(1, 4, 4);
 		s.connect(2, 3, 2);
 		s.connect(3, 4, 4);
@@ -157,11 +160,13 @@ class Graph_AlgoJUNIT {
 		List<Integer> t = new ArrayList<Integer>();
 		t.add(1);
 		t.add(3);
+		t.add(2);
 		t.add(5);
 		t.add(7);
 		t.add(8);
 		List<node_data> ans = e.TSP(t);
-		//System.out.println(ans);
+	//	List<node_data> ans2 = e.TSPv2(t);
+	//	System.out.println(ans);
 	}
 
 	@Test
@@ -197,7 +202,12 @@ class Graph_AlgoJUNIT {
 			fail("Should be diff");
 		}
 	}
-	
+	@Test
+	void test()
+	{
+		graph g = graphFactory();
+		
+	}
 	
 	graph createGraphBefore()
 	{
@@ -215,6 +225,31 @@ class Graph_AlgoJUNIT {
 		graph.connect(5, 6,8);
 		return graph;
 		
+	}
+	graph graphFactory()
+	{
+		graph graph = new DGraph();
+		Random rand = new Random();
+		for (int i = 0; i < 100; i++) {
+			
+			Point3D p = new Point3D(rand.nextInt(600), rand.nextInt(600));
+			graph.addNode(new vertex(i,p));
+		}
+		Collection<node_data> nd = graph.getV();
+		for (node_data node_data : nd) {
+			int amount_of_edegs = rand.nextInt(20);
+			for (int i = 0; i < amount_of_edegs; i++) {
+				int dest = rand.nextInt(100);
+				while(dest != node_data.getKey())
+				{
+					dest = rand.nextInt(100);
+				}
+				double weight = rand.nextDouble();
+				weight*= 100;
+				graph.connect(node_data.getKey(), dest, weight);
+			}
+		}
+		return graph;
 	}
 
 }

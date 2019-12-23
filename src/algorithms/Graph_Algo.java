@@ -294,22 +294,22 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 	}
 	
 	
-//	public List<node_data> shortestPathForTSP(int src, int dest,List<Integer> targets,Hashtable<Integer, Integer> wasthere) {
-//		Dijksta(src);
-//		List<node_data> ans = new ArrayList<node_data>();
-//		node_data currNode = graph.getNode(dest);
-//		while(!currNode.getInfo().isEmpty())
-//		{
-//			if(targets.contains(currNode.getKey()))
-//			{
-//				wasthere.put(currNode.getKey(), currNode.getKey());
-//			}
-//			ans.add(0, currNode);
-//			currNode = graph.getNode(Integer.parseInt(currNode.getInfo()));
-//		}
-//		ans.add(0, currNode);
-//		return ans;
-//	}
+	public List<node_data> shortestPathForTSP(int src, int dest,HashSet<Integer> wasthere) {
+		Dijksta(src);
+		List<node_data> ans = new ArrayList<node_data>();
+		node_data currNode = graph.getNode(dest);
+		while(!currNode.getInfo().isEmpty())
+		{
+			if(wasthere.contains(currNode.getKey()))
+			{
+				wasthere.remove(currNode.getKey());
+			}
+			ans.add(0, currNode);
+			currNode = graph.getNode(Integer.parseInt(currNode.getInfo()));
+		}
+		ans.add(0, currNode);
+		return ans;
+	}
 
 	@Override
 	public List<node_data> TSP(List<Integer> targets) {
@@ -323,7 +323,6 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 				if(i == 0)
 				{
 					ans.addAll(shortestPath(targets.get(i), targets.get(i+1)));
-					
 				}
 				else
 				{
@@ -343,6 +342,7 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 		for (Integer integer : targets) {
 			wasNotThere.add(integer);
 		}
+		//wasNotThere.remove(targets.get(0));
 		int i =0;
 		while(i<targets.size()-1)
 		{
@@ -350,21 +350,20 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 			{
 				if(i == 0)
 				{
-					ans.addAll(shortestPath(targets.get(i), targets.get(i+1)));
-					
+					ans.addAll(shortestPathForTSP(targets.get(i), targets.get(i+1),wasNotThere));
 				}
 				else
 				{
-					List<node_data> pre =shortestPath(targets.get(i), targets.get(i+1));
+					List<node_data> pre =shortestPathForTSP(ans.get(ans.size()-1).getKey(), targets.get(i+1),wasNotThere);
 					pre.remove(0);
 					ans.addAll(pre);
 				}
 			}
 			i++;
 		}
-		
-		
-		return null;
+		wasNotThere.remove(targets.get(0));
+		ans.add(graph.getNode(targets.get(targets.size()-1)));
+		return ans;
 	}
 
 	@Override

@@ -2,6 +2,9 @@ package tests;
 import algorithms.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Collection;
+import java.util.Random;
+
 import org.junit.jupiter.api.Test;
 import dataStructure.*;
 import graphs_GUI.g_GUI;
@@ -10,7 +13,7 @@ import utils.Point3D;
 class g_GUI_test {
 
 	public static void main(String[] args) {
-		testDraw();
+		testmaybe();
 	}
 	
 	
@@ -41,7 +44,7 @@ class g_GUI_test {
 		g.connect(10, 11, 60);
 		g.connect(5, 6, 10);
 		g.connect(6, 1, 50);
-		g_GUI gui = new g_GUI();
+		g_GUI gui = new g_GUI(g);
 		Graph_Algo gg = new Graph_Algo();
 		gg.init(g);
 		double ee = gg.shortestPathDist(1, 6);
@@ -49,5 +52,38 @@ class g_GUI_test {
 		
 		
 	}
-
+	@Test
+	static void testmaybe()
+	{
+		graph gggg = graphFactory();
+		Graph_Algo GA = new Graph_Algo();
+		g_GUI gui = new g_GUI(gggg);
+	//	GA.init(gggg);
+		System.out.println();
+	}
+	static graph graphFactory()
+	{
+		graph graph = new DGraph();
+		Random rand = new Random();
+		for (int i = 0; i < 100; i++) {
+			
+			Point3D p = new Point3D(rand.nextInt(700)+100, rand.nextInt(700)+100);
+			graph.addNode(new vertex(i,p));
+		}
+		Collection<node_data> nd = graph.getV();
+		for (node_data node_data : nd) {
+			int amount_of_edegs = rand.nextInt(5);
+			for (int i = 0; i < amount_of_edegs; i++) {
+				int dest = rand.nextInt(100);
+				while(dest == node_data.getKey())
+				{
+					dest = rand.nextInt(100);
+				}
+				int weight = rand.nextInt(20);
+				//weight*= 10;
+				graph.connect(node_data.getKey(), dest, weight);
+			}
+		}
+		return graph;
+	}
 }
