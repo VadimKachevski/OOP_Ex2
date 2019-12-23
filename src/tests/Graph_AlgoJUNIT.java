@@ -23,21 +23,21 @@ class Graph_AlgoJUNIT {
 	{
 		a.init(createGraphBefore());
 	}
-	
-	
-	//@Test
-	void testInitGraph() {
-		fail("Not yet implemented");
-	}
-
 	@Test
 	void testInitString() {
-		a.init("testSave.txt");
+		a.init("avi.txt");
+		System.out.println();
 	}
 
 	@Test
 	void testSave() {
-		a.save("testSave.txt");
+		a.save("avi.txt");
+		Graph_Algo b = new Graph_Algo();
+		b.init("avi.txt");
+		double a1_to_6 = a.shortestPathDist(1, 6);
+		double b1_to_6 = b.shortestPathDist(1, 6);
+		assertEquals(a1_to_6, b1_to_6,0.001);
+		
 	}
 
 	@Test
@@ -61,9 +61,12 @@ class Graph_AlgoJUNIT {
 		s.connect(5, 7, 0);
 		s.connect(6, 7, 0);
 		s.connect(7, 2, 0);
+//		s.addNode(new vertex(1));
+//		s.addNode(new vertex(2));
+//		s.connect(1, 2, 0);
 		Graph_Algo e = new Graph_Algo();
 		e.init(s);
-		assertEquals(false, e.isConnectedNew());
+		assertEquals(false, e.isConnected());
 	}
 
 	@Test
@@ -188,7 +191,11 @@ class Graph_AlgoJUNIT {
 		e.init(s);
 		
 		graph n = e.copy();
-		//System.out.println(n);
+		s.getNode(1).setWeight(30);
+		if(n.getNode(1).getWeight() == s.getNode(1).getWeight())
+		{
+			fail("Should be diff");
+		}
 	}
 	
 	

@@ -7,6 +7,10 @@ import utils.Point3D;
 
 public class vertex implements node_data,Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1589796957066318516L;
 	int key;
 	Point3D location;
 	double weight;
@@ -16,6 +20,20 @@ public class vertex implements node_data,Serializable {
 	public vertex(int key) {
 		this.key = key;
 		this.location = null;
+		this.weight = 0;
+		this.metadata = "";
+		this.tag = 0;
+	}
+	public vertex(int key,Point3D location) {
+		this.key = key;
+		if(location != null)
+		{
+			this.location = new Point3D(location);
+		}
+		else
+		{
+			this.location = null;
+		}
 		this.weight = 0;
 		this.metadata = "";
 		this.tag = 0;

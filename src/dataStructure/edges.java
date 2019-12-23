@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 public class edges implements edge_data,Serializable {
 
-	static int countEdges = 0;
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7222420243279380576L;
 	int srcVertex;
 	int destVertx;
 	double weight;

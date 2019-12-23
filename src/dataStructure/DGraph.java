@@ -10,23 +10,28 @@ import java.util.Set;
 
 public class DGraph implements graph,Serializable{
 
-	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 568702754958880042L;
+	int countEdges = 0;
 	int MC = 0;
 	Hashtable<Integer, node_data> vertexs;
-		// src					DEST
+	// src					DEST
 	Hashtable<node_data, Hashtable<Integer, edge_data>> edgesPerVertex;
-	
-	
+
+
 	public DGraph() {
 		vertexs = new Hashtable<Integer, node_data>();
 		edgesPerVertex = new Hashtable<node_data, Hashtable<Integer,edge_data>>();
 	}
-	
+
 	@Override
 	public node_data getNode(int key) {
 		//MC++;
 		return vertexs.get(key);
-		
+
 	}
 
 	@Override
@@ -42,8 +47,8 @@ public class DGraph implements graph,Serializable{
 		MC++;
 		if(!vertexs.containsKey(n.getKey()))
 		{
-				vertexs.put(n.getKey(), n);
-				edgesPerVertex.put(n, new Hashtable<Integer, edge_data>());
+			vertexs.put(n.getKey(), n);
+			edgesPerVertex.put(n, new Hashtable<Integer, edge_data>());
 		}
 	}
 
@@ -53,7 +58,7 @@ public class DGraph implements graph,Serializable{
 		// TODO Auto-generated method stub
 		node_data vert = vertexs.get(src);
 		edgesPerVertex.get(vert).put(dest, new edges(src, dest, w));
-		edges.countEdges++;
+		countEdges++;
 	}
 
 	@Override
@@ -75,12 +80,16 @@ public class DGraph implements graph,Serializable{
 		node_data vert = vertexs.get(key);
 		Set<node_data> sets = edgesPerVertex.keySet();
 		for (node_data node_data : sets) {
-			edgesPerVertex.get(node_data).remove(key);
-			edges.countEdges--;
+			edge_data edg = edgesPerVertex.get(node_data).remove(key);
+			if(edg != null)
+			{
+				countEdges--;
+			}
 		}
-		edges.countEdges -= edgesPerVertex.get(vert).size();
+		countEdges -= edgesPerVertex.get(vert).size();
 		edgesPerVertex.remove(vert);
 		return vertexs.remove(key);
+
 	}
 
 	@Override
@@ -99,7 +108,7 @@ public class DGraph implements graph,Serializable{
 	@Override
 	public int edgeSize() {
 		//MC++;
-		return edges.countEdges;
+		return countEdges;
 	}
 
 	@Override
