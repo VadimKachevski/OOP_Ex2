@@ -16,8 +16,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -45,6 +47,9 @@ public class g_GUI extends JFrame implements ActionListener  {
 		//GA.init(graph);
 		initGUI();
 	}
+	/**
+	 * Initiates the GUI with 1000x1000 and all the menu bars
+	 */
 	private void initGUI()
 	{
 		//JFrame j = new JFrame();
@@ -60,33 +65,35 @@ public class g_GUI extends JFrame implements ActionListener  {
 		MenuItem item3 = new MenuItem("Save to file");
 		MenuItem item4 = new MenuItem("find Shortest path");
 		MenuItem item5 = new MenuItem("find Shortest path distance");
-		MenuItem item6 = new MenuItem("TSP");
+		MenuItem item6 = new MenuItem("TSP enter all the nodes");
+		MenuItem item7 = new MenuItem("TSP from file");
 		item1.addActionListener(this);
 		item2.addActionListener(this);
 		item3.addActionListener(this);
 		item4.addActionListener(this);
 		item5.addActionListener(this);
 		item6.addActionListener(this);
+		item7.addActionListener(this);
 		menu.add(item1);
 		menu.add(item2);
 		menu.add(item3);
 		menu.add(item4);
 		menu.add(item5);
 		menu.add(item6);
-		
-
+		menu.add(item7);
 	}
 
+	/**
+	 * Custom paint function to paint the Graph
+	 */
 	public void paint(Graphics g)
 	{
 		super.paint(g);
 
 		if(graph != null)
 		{
-			//System.out.println("AAAAAAAAAAAAAA");
 			Collection<node_data> nodes = graph.getV();
 			for (node_data node_data : nodes) {
-				//System.out.println("AAAAAAAAAAAAAAeeeee");
 				g.setColor(Color.BLUE);
 				Point3D p = node_data.getLocation();
 				if(p != null)
@@ -99,15 +106,13 @@ public class g_GUI extends JFrame implements ActionListener  {
 						Stroke bs = g2d.getStroke();
 						if(edge.getTag() == 999)
 						{
-							
 							edge.setTag(0);
 							g2d.setStroke(new BasicStroke(5));
 							g.setColor(Color.GREEN);
-							
 						}
 						else
 						{
-						g.setColor(Color.RED);
+							g.setColor(Color.RED);
 						}
 						node_data dest = graph.getNode(edge.getDest());
 						Point3D pd = dest.getLocation();
@@ -126,25 +131,24 @@ public class g_GUI extends JFrame implements ActionListener  {
 			}
 		}
 	}
-	
-	private void DrawFromGraph() {
+
+	/**
+	 * With a given txt file creating a Graph, should be serializable from a Graph. 
+	 */
+	private void DrawFromFile() {
 		Graph_Algo ga = new Graph_Algo();
-		//ga.init(graph);
-		System.out.println("DRAW");
 		JFileChooser jf = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 		int returnV = jf.showOpenDialog(null);
 		if (returnV == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = jf.getSelectedFile();
-			//System.out.println(selectedFile.getAbsolutePath());
 			ga.init(selectedFile.getAbsolutePath());
-			
 			this.graph = ga.copy();
-			//System.out.println(selectedFile.getAbsolutePath());
 			repaint();
-			//System.out.println(selectedFile.getAbsolutePath());
 		}
-		
 	}
+	/**
+	 * Saving the current graph into a unreable deserializable file.
+	 */
 	private void saveToFile()
 	{
 		String sb = "TEST CONTENT";
@@ -155,25 +159,22 @@ public class g_GUI extends JFrame implements ActionListener  {
 		if (returnV == JFileChooser.APPROVE_OPTION) {
 			try {
 				ga.save(jf.getSelectedFile()+".txt");
-//	            FileWriter fw = new FileWriter(jf.getSelectedFile()+".txt");
-//	            fw.write(sb.toString());
-//	            fw.close();
-	        } catch (Exception ex) {
-	            ex.printStackTrace();
-	        }
-			//File selectedFile = jf.getSelectedFile();
-			//System.out.println(selectedFile.getAbsolutePath());
-			
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
-		System.out.println("SAVE");
 	}
+	/**
+	 * Asks the user a From and a TO and tries to re-create the shortest path
+	 * will mark the path in green if a path is possible else nothing will happen
+	 */
 	private void shortestPath()
 	{
 		JFrame jinput = new JFrame();
 		String fromS = JOptionPane.showInputDialog(jinput,"Enter From");		
-		//JFrame from2 = new JFrame();
 		String to = JOptionPane.showInputDialog(jinput,"Enter To");
-		//System.out.println("From "+ fromS +" TO "+fromT);
+		fromS = fromS.trim();
+		to = to.trim();
 		try
 		{
 			int fromN = Integer.parseInt(fromS);
@@ -190,11 +191,14 @@ public class g_GUI extends JFrame implements ActionListener  {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Asks the user a From and a TO and tries to re-create the shortest path
+	 * Will show the shortest path length in a Message dialog
+	 */
 	private void ShortestPathDist()
 	{
 		JFrame jinput = new JFrame();
 		String fromS = JOptionPane.showInputDialog(jinput,"Enter From");		
-		//JFrame from2 = new JFrame();
 		String to = JOptionPane.showInputDialog(jinput,"Enter To");
 		try
 		{
@@ -209,6 +213,76 @@ public class g_GUI extends JFrame implements ActionListener  {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Asks the user through which nodes he should pass when the user is done 
+	 * he need to write DONE and it will try to create the relative shortest path through
+	 * all the nodes
+	 */
+	private void TSPEnterNodes()
+	{
+		JFrame jinput = new JFrame();
+		JOptionPane.showMessageDialog(jinput, "To get TSP enter all the nodes from start node to end node \n after you are done enter DONE");
+		ArrayList<Integer> arrayTSP = new ArrayList<Integer>();
+		String ans;
+		do {
+			ans = JOptionPane.showInputDialog(jinput, "Enter node or DONE when it is the last node");
+			if(ans.equalsIgnoreCase("done"))
+			{
+				break;
+			}
+			try
+			{
+				arrayTSP.add(Integer.parseInt(ans));
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		} while (!ans.equalsIgnoreCase("done"));
+		Graph_Algo ga = new Graph_Algo();
+		ga.init(graph);
+		List<node_data> ansTSP = ga.TSP(arrayTSP);
+		for (int j = 0;j < ansTSP.size()-1; j++) {
+			graph.getEdge(ansTSP.get(j).getKey(), ansTSP.get(j+1).getKey()).setTag(999);
+		}
+		repaint();
+	}
+	/**
+	 * with a given file in the format x,y,z,t,y...  will try to create the shortest path 
+	 * through all the nodes in the file
+	 */
+	private void TSPfromFile()
+	{
+		Graph_Algo ga = new Graph_Algo();
+		JFileChooser jf = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+		int returnV = jf.showOpenDialog(null);
+		String ans;
+		if (returnV == JFileChooser.APPROVE_OPTION) {
+			File selectedFile = jf.getSelectedFile();
+			try
+			{
+				Scanner sc = new Scanner(selectedFile);
+				if(sc.hasNextLine())
+				{
+					ans = sc.nextLine();
+					String[] seg = ans.split(",");
+					List<Integer> ListNodes = new ArrayList<Integer>();
+					for (int i = 0; i < seg.length; i++) {
+						seg[i] = seg[i].trim();
+						ListNodes.add(Integer.parseInt(seg[i]));
+					}
+					ga.init(graph);
+					List<node_data> ansTSP = ga.TSP(ListNodes);
+					for (int j = 0;j < ansTSP.size()-1; j++) {
+						graph.getEdge(ansTSP.get(j).getKey(), ansTSP.get(j+1).getKey()).setTag(999);
+					}
+					repaint();
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String act = e.getActionCommand();
@@ -216,13 +290,17 @@ public class g_GUI extends JFrame implements ActionListener  {
 		case "Draw graph":
 			repaint();
 			break;
-		case "Draw from file":DrawFromGraph();
+		case "Draw from file":DrawFromFile();
 		break;
 		case "Save to file" :saveToFile();
 		break;
 		case "find Shortest path" : shortestPath();
 		break;
 		case "find Shortest path distance" : ShortestPathDist();
+		break;
+		case "TSP enter all the nodes" : TSPEnterNodes();
+		break;
+		case "TSP from file" : TSPfromFile();
 		break;
 		default:
 			break;

@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -62,13 +63,58 @@ class Graph_AlgoJUNIT {
 		s.connect(5, 6, 0);
 		s.connect(5, 7, 0);
 		s.connect(6, 7, 0);
-		s.connect(7, 2, 0);
-//		s.addNode(new vertex(1));
-//		s.addNode(new vertex(2));
-//		s.connect(1, 2, 0);
+		s.connect(7, 1, 0);
+////		s.addNode(new vertex(1));
+////		s.addNode(new vertex(2));
+////		s.connect(1, 2, 0);
 		Graph_Algo e = new Graph_Algo();
 		e.init(s);
-		assertEquals(false, e.isConnected());
+		assertEquals(true, e.isConnected());
+		
+		graph g2 = new DGraph();
+		g2.addNode(new vertex(1));
+		g2.addNode(new vertex(2));
+		g2.addNode(new vertex(3));
+		g2.addNode(new vertex(4));
+		g2.addNode(new vertex(5));
+		g2.connect(1, 5, 30);
+		g2.connect(5, 1, 30);
+		g2.connect(2, 5, 30);
+		g2.connect(5, 2, 30);
+		g2.connect(3, 5, 30);
+		g2.connect(5, 3, 30);
+		g2.connect(4, 5, 30);
+		g2.connect(5, 4, 30);
+		Graph_Algo ga2 = new Graph_Algo();
+		ga2.init(g2);
+		assertEquals(true, ga2.isConnected());
+		
+		graph g3 = new DGraph();
+		g3.addNode(new vertex(1));
+		g3.addNode(new vertex(2));
+		g3.addNode(new vertex(3));
+		g3.addNode(new vertex(4));
+		g3.addNode(new vertex(5));
+		g3.connect(1, 2, 30);
+		g3.connect(2, 3, 30);
+		g3.connect(3, 4, 30);
+		g3.connect(4, 5, 30);
+		Graph_Algo ga3 = new Graph_Algo();
+		ga3.init(g3);
+		assertEquals(false, ga3.isConnected());
+		
+//		Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+//		System.out.println(timestamp);
+//		graph test = MillionVertex();
+//		Timestamp timestamp2 = new Timestamp(System.currentTimeMillis());
+//		System.out.println(timestamp2);
+//		Graph_Algo gM = new Graph_Algo();
+//		gM.init(test);
+//		Timestamp timestamp3 = new Timestamp(System.currentTimeMillis());
+//		System.out.println(timestamp3);
+//		System.out.println(gM.isConnected());
+//		Timestamp timestamp4 = new Timestamp(System.currentTimeMillis());
+//		System.out.println(timestamp4);
 	}
 
 	@Test
@@ -163,9 +209,24 @@ class Graph_AlgoJUNIT {
 		t.add(2);
 		t.add(5);
 		t.add(7);
+		t.add(6);
 		t.add(8);
-		List<node_data> ans = e.TSP(t);
-	//	List<node_data> ans2 = e.TSPv2(t);
+		//List<node_data> ans = e.TSP(t);
+		List<node_data> ans2 = e.TSP(t);
+		List<Integer> expec = new ArrayList<Integer>();
+		expec.add(1);
+		expec.add(2);
+		expec.add(3);
+		expec.add(5);
+		expec.add(6);
+		expec.add(7);
+		expec.add(8);
+		for (int i = 0; i < ans2.size(); i++) {
+			if(ans2.get(i).getKey() != expec.get(i))
+			{
+				fail("Should't not fail");
+			}
+		}
 	//	System.out.println(ans);
 	}
 
@@ -249,6 +310,49 @@ class Graph_AlgoJUNIT {
 				graph.connect(node_data.getKey(), dest, weight);
 			}
 		}
+		return graph;
+	}
+	graph MillionVertex()
+	{
+		graph graph = new DGraph();
+		Random rand = new Random();
+		for (int i = 0; i < 1000000; i++) {
+			Point3D p = new Point3D(rand.nextInt(600), rand.nextInt(600));
+			graph.addNode(new vertex(i,p));
+		}
+		for (int i = 0; i < 1000000-10; i++) {
+			graph.connect(i, i+1, 30);
+			graph.connect(i, i+2, 30);
+			graph.connect(i, i+3, 30);
+			graph.connect(i, i+4, 30);
+			graph.connect(i, i+5, 30);
+			graph.connect(i, i+6, 30);
+			graph.connect(i, i+7, 30);
+			graph.connect(i, i+8, 30);
+			graph.connect(i, i+9, 30);
+			graph.connect(i, i+10, 30);
+			
+		}
+		graph.connect(999996, 0, 30);
+		graph.connect(999997, 0, 30);
+		graph.connect(999998, 0, 30);
+		graph.connect(999999, 0, 30);
+//		Collection<node_data> nd = graph.getV();
+//		for (node_data node_data : nd) {
+//			//System.out.println(node_data.getKey());
+//			for(int i=0;i<5;i++)
+//			{
+//				int dest = rand.nextInt(100000);
+//				while(dest != node_data.getKey())
+//				{
+//					dest = rand.nextInt(100000);
+//				}
+//				double weight = rand.nextDouble();
+//				weight*= 100;
+//				graph.connect(node_data.getKey(), dest, weight);
+//			}
+//		}
+		
 		return graph;
 	}
 

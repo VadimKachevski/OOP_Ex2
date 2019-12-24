@@ -27,7 +27,7 @@ import dataStructure.vertex;
  */
 public class Graph_Algo implements graph_algorithms,Serializable{
 
-	
+
 
 	/**
 	 * 
@@ -74,87 +74,116 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 			e.printStackTrace();
 		}
 	}
-
-
-
-	//	@Override
-	//	public boolean isConnected() {
-	//		//HashMap<node_data, Integer> connectedNodes = new HashMap<node_data, Integer>(); 
-	//		Collection<node_data> s = graph.getV();
-	//		for (node_data node_data : s) {
-	//			cleanTags();
-	//			//node_data.setTag(1);
-	//			//connectedNodes.put(node_data, 1);
-	//			int ans = isConnectedHelper(node_data);
-	//			if(ans != s.size())
-	//			{
-	//				return false;
-	//			}
-	//
-	//		}
-	//		return true;
-	//	}
-	private int amountOfNodesThisNodeCanGetTo(node_data n)
+	/**
+	 * Counts the amount of nodes this node can get too
+	 * @param n
+	 * @return
+	 */
+	private int amountNodes(node_data n)
 	{
-		if(n.getTag() == 1)
+		int counter=0;
+		ArrayList<node_data> nd = new ArrayList<node_data>();
+		nd.add(n);
+		while(!nd.isEmpty())
 		{
-			return 0;
-		}
-		n.setTag(1);
-		Collection<edge_data> edge = graph.getE(n.getKey());
-		int counter=1;
-		for (edge_data edge_data : edge) {
-			counter += amountOfNodesThisNodeCanGetTo(graph.getNode(edge_data.getDest()));
+			node_data temp = nd.get(0);
+			if(temp.getTag()==0)
+			{
+				temp.setTag(1);
+				counter++;
+				nd.remove(0);
+				Collection<edge_data> edge = graph.getE(temp.getKey());
+
+				for (edge_data edge_data : edge) {
+					node_data other = graph.getNode(edge_data.getDest());
+					if(other.getTag() == 0)
+					{
+						nd.add(0,other);
+					}
+				}
+			}
+			else
+			{
+				nd.remove(0);
+			}
 		}
 		return counter;
 	}
-
 	// Should be faster then the org algo
 	@Override
 	public boolean isConnected()
 	{
+		HashSet<node_data> allreayConnected = new HashSet<node_data>();
 		Collection<node_data> s = graph.getV();
-		boolean firstNode = false;
-		node_data firstN;
+		boolean firstNode = true;
+		node_data firstN=null;
 		boolean ansBool=true;
 		for (node_data node_data : s) {
-			if(firstNode == false)
-				cleanTags();
-			firstN = node_data;
-			int ans = amountOfNodesThisNodeCanGetTo(node_data);
-			if(ans != s.size())
+			cleanTags();
+			if(firstNode)
 			{
-				return false;
+				firstN=node_data;
+				firstNode= false;
+				int ans = amountNodes(node_data);
+				if(ans != s.size())
+				{
+					return false;
+				}
 			}
 			else
 			{
-				ansBool = ansBool && canOtherNodeGetToORG_Node(node_data, firstN);
+				if(canOthersGeToThis(node_data, firstN,allreayConnected) == false)
+				{
+					return false;
+				}
 			}
-
 		}
 		return ansBool;
 	}
-	private boolean canOtherNodeGetToORG_Node(node_data n,node_data firstNode)
+	/**
+	 * Iterates over all the nodes and checks if there any way to get to the first node
+	 * @param n
+	 * @param first
+	 * @param allreadtconnected
+	 * @return
+	 */
+	private boolean canOthersGeToThis(node_data n,node_data first,HashSet<node_data> allreadtconnected)
 	{
-		boolean found = false;
-		if(n == firstNode)
+		if(n.getKey() == first.getKey())
 		{
+			allreadtconnected.add(n);
 			return true;
 		}
-		if(n.getTag() == 1)
+		ArrayList<node_data> nodesToCheck = new ArrayList<node_data>();
+		nodesToCheck.add(n);
+		while(!nodesToCheck.isEmpty())
 		{
-			return found;
+			node_data currN = nodesToCheck.remove(0);
+			if(currN.getTag() == 0)
+			{
+				currN.setTag(1);
+				Collection<edge_data> edge = graph.getE(currN.getKey());
+				for (edge_data edge_data : edge) {
+					node_data dest = graph.getNode(edge_data.getDest());
+					if(first.getKey() == edge_data.getDest() || allreadtconnected.contains(dest))
+					{
+						allreadtconnected.add(currN);
+						return true;
+					}
+					else {
+						if(dest.getTag() == 0)
+						{
+							nodesToCheck.add(0,dest);
+						}
+					}
+				}
+			}
 		}
-		n.setTag(1);
-		Collection<edge_data> edge = graph.getE(n.getKey());
-		for (edge_data edge_data : edge) {
-			found =found || canOtherNodeGetToORG_Node(graph.getNode(edge_data.getDest()),firstNode);
-		}
-		//return counter;
-		return found;
+		return false;
 	}
-
-
+	/**
+	 * Sets tag to 0 on all nodes
+	 */
 	private void cleanTags()
 	{
 		Collection<node_data> s = graph.getV();
@@ -162,8 +191,9 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 			node_data.setTag(0);
 		}
 	}
-
-
+	/**
+	 * sets tag to 0 and weight and MAX_VALUE on all nodes
+	 */
 	private void cleanTagsSetweight()
 	{
 		Collection<node_data> s = graph.getV();
@@ -173,41 +203,10 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 			node_data.setInfo("");
 		}
 	}
-
-	//	private void Dijksta(int src)
-	//	{
-	//		cleanTagsSetweight();
-	//
-	//		node_data minNodeNotTouched = graph.getNode(src);
-	//		minNodeNotTouched.setWeight(0);
-	//		node_data currMin = null;
-	//		while(minNodeNotTouched != null)
-	//		{
-	//			minNodeNotTouched.setTag(1);
-	//			Collection<edge_data> edges = graph.getE(minNodeNotTouched.getKey());
-	//			currMin = null;
-	//			for (edge_data edge_data : edges) {
-	//				node_data currNode = graph.getNode(edge_data.getDest());
-	//				if(currNode.getWeight() > minNodeNotTouched.getWeight() + edge_data.getWeight())
-	//				{
-	//					currNode.setWeight(minNodeNotTouched.getWeight() + edge_data.getWeight());
-	//					currNode.setInfo(minNodeNotTouched.getKey()+"");
-	//					if(currMin == null && currNode.getTag() == 0)
-	//					{
-	//						currMin = currNode;
-	//					}
-	//					else
-	//					{
-	//						if(currMin.getWeight() > currNode.getWeight() && currNode.getTag() == 0);
-	//						{
-	//							currMin = currNode;
-	//						}
-	//					}
-	//				}
-	//			}
-	//			minNodeNotTouched = currMin;
-	//		}
-	//	}
+	/**
+	 * Dijkstra algorithm from source 
+	 * @param src
+	 */
 	private void Dijksta(int src)
 	{
 		cleanTagsSetweight();
@@ -241,10 +240,13 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 				Mins.remove(0);
 			}
 		}
-
 	}
-
-
+	/**
+	 * get the insert position in sorted array
+	 * @param Mins
+	 * @param destNodeW
+	 * @return
+	 */
 	private int getPosInArray(ArrayList<node_data> Mins,double destNodeW)
 	{
 		int minIndex = 0;
@@ -276,9 +278,6 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 		Dijksta(src);
 		return graph.getNode(dest).getWeight();
 	}
-
-
-
 	@Override
 	public List<node_data> shortestPath(int src, int dest) {
 		Dijksta(src);
@@ -292,77 +291,79 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 		ans.add(0, currNode);
 		return ans;
 	}
-	
-	
-	public List<node_data> shortestPathForTSP(int src, int dest,HashSet<Integer> wasthere) {
-		Dijksta(src);
+	/**
+	 * Special shortest path for TSP algorithm
+	 * @param src
+	 * @param dest
+	 * @param wasNotThere
+	 * @return
+	 */
+	private List<node_data> shortestPathForTSP(int src, int dest,HashSet<Integer> wasNotThere) {
 		List<node_data> ans = new ArrayList<node_data>();
+		Dijksta(src);
 		node_data currNode = graph.getNode(dest);
 		while(!currNode.getInfo().isEmpty())
 		{
-			if(wasthere.contains(currNode.getKey()))
-			{
-				wasthere.remove(currNode.getKey());
-			}
 			ans.add(0, currNode);
 			currNode = graph.getNode(Integer.parseInt(currNode.getInfo()));
+			if(wasNotThere.contains(currNode.getKey()))
+			{
+				wasNotThere.remove(currNode.getKey());
+			}
 		}
 		ans.add(0, currNode);
 		return ans;
 	}
-
 	@Override
-	public List<node_data> TSP(List<Integer> targets) {
-		List<node_data> ans = new ArrayList<node_data>();
-		int i = 0;
-		//Hashtable<Integer, Integer> wasthere = new Hashtable<Integer, Integer>();
-		while(i<targets.size()-1)
-		{
-		//	if(!wasthere.containsKey(i))
-		//	{
-				if(i == 0)
-				{
-					ans.addAll(shortestPath(targets.get(i), targets.get(i+1)));
-				}
-				else
-				{
-					List<node_data> pre =shortestPath(targets.get(i), targets.get(i+1));
-					pre.remove(0);
-					ans.addAll(pre);
-				}
-				i++;
-		//	}
-		}
-		return ans;
-	}
-	public List<node_data> TSPv2(List<Integer> targets)
+	public List<node_data> TSP(List<Integer> targets)
 	{
 		List<node_data> ans = new ArrayList<node_data>();
+		if(targets.size() == 0)
+		{
+			return ans;
+		}
+		if(targets.size() == 1)
+		{
+			ans.add(graph.getNode(targets.get(0)));
+			return ans;
+		}
 		HashSet<Integer> wasNotThere = new HashSet<Integer>();
 		for (Integer integer : targets) {
 			wasNotThere.add(integer);
 		}
-		//wasNotThere.remove(targets.get(0));
-		int i =0;
-		while(i<targets.size()-1)
+		int dest = 1;
+		int from = 0;
+		boolean firstRun = true;
+		while(dest<targets.size())
 		{
-			if(wasNotThere.contains(targets.get(i)))
+			if(wasNotThere.contains(targets.get(from)))
 			{
-				if(i == 0)
+				if(wasNotThere.contains(targets.get(dest)))
 				{
-					ans.addAll(shortestPathForTSP(targets.get(i), targets.get(i+1),wasNotThere));
+					if(firstRun)
+					{
+						ans.addAll(shortestPathForTSP(targets.get(from), targets.get(dest),wasNotThere));
+						firstRun=false;
+					}
+					else
+					{
+						List<node_data> pre =shortestPathForTSP(targets.get(from), targets.get(dest),wasNotThere);
+						pre.remove(0);
+						ans.addAll(pre);
+					}
+					dest++;
+					from++;
 				}
 				else
 				{
-					List<node_data> pre =shortestPathForTSP(ans.get(ans.size()-1).getKey(), targets.get(i+1),wasNotThere);
-					pre.remove(0);
-					ans.addAll(pre);
+					dest++;
 				}
 			}
-			i++;
+			else
+			{
+				from++;
+			}
 		}
-		wasNotThere.remove(targets.get(0));
-		ans.add(graph.getNode(targets.get(targets.size()-1)));
 		return ans;
 	}
 

@@ -55,7 +55,6 @@ public class DGraph implements graph,Serializable{
 	@Override
 	public void connect(int src, int dest, double w) {
 		MC++;
-		// TODO Auto-generated method stub
 		node_data vert = vertexs.get(src);
 		edgesPerVertex.get(vert).put(dest, new edges(src, dest, w));
 		countEdges++;
@@ -63,13 +62,11 @@ public class DGraph implements graph,Serializable{
 
 	@Override
 	public Collection<node_data> getV() {
-		//MC++;
 		return vertexs.values();
 	}
 
 	@Override
 	public Collection<edge_data> getE(int node_id) {
-		//MC++;
 		node_data vert = vertexs.get(node_id);
 		return edgesPerVertex.get(vert).values();
 	}
@@ -101,13 +98,11 @@ public class DGraph implements graph,Serializable{
 
 	@Override
 	public int nodeSize() {
-		//MC++;
 		return vertexs.size();
 	}
 
 	@Override
 	public int edgeSize() {
-		//MC++;
 		return countEdges;
 	}
 
