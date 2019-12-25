@@ -28,3 +28,7 @@ The algorithem that can performed on those graphs:
 * shortestPathDist - calculates the shortest distance from source to destination using dijkstra.
 * shortestPath - return the shortest path from the source to destination using dijkstra.
 * TSP - with a given list of keys will try to create the shortest path between all those vertics.
+
+The graphical interface supports all those algorithems.
+
+![GraphGUI](https://user-images.githubusercontent.com/57190865/71442528-e5ffe680-270e-11ea-8faa-c156b174420c.png)
