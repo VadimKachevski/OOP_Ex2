@@ -17,6 +17,15 @@ public class vertex implements node_data,Serializable {
 	String metadata;
 	int tag;
 
+	public vertex()
+	{
+		this.key = 0;
+		this.location = null;
+		this.weight = 0;
+		this.metadata = "";
+		this.tag = 0;
+	}
+	
 	public vertex(int key) {
 		this.key = key;
 		this.location = null;

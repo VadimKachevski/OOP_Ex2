@@ -15,6 +15,15 @@ public class edges implements edge_data,Serializable {
 	String metadata;
 	int tag;
 	
+	
+	public edges()
+	{
+		this.srcVertex = 0;
+		this.destVertx = 0;
+		this.weight = 0;
+		this.metadata = "";
+		this.tag = 0;
+	}
 	public edges(int srcVertex,int destVerex,double weight) {
 		this.srcVertex = srcVertex;
 		this.destVertx = destVerex;
