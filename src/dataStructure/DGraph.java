@@ -25,6 +25,8 @@ public class DGraph implements graph,Serializable{
 	public DGraph() {
 		vertexs = new Hashtable<Integer, node_data>();
 		edgesPerVertex = new Hashtable<node_data, Hashtable<Integer,edge_data>>();
+		countEdges = 0;
+		MC = 0;
 	}
 
 	@Override

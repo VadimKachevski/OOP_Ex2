@@ -33,6 +33,14 @@ public class vertex implements node_data,Serializable {
 		this.metadata = "";
 		this.tag = 0;
 	}
+	public vertex(int key,int x,int y)
+	{
+		this.key = key;
+		this.location = new Point3D(x, y);
+		this.weight= 0;
+		this.metadata = "";
+		this.tag = 0;
+	}
 	public vertex(int key,Point3D location) {
 		this.key = key;
 		if(location != null)

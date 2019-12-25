@@ -53,7 +53,7 @@ public class g_GUI extends JFrame implements ActionListener  {
 	private void initGUI()
 	{
 		//JFrame j = new JFrame();
-		this.setSize(1000, 1000);
+		this.setSize(1000, 800);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		MenuBar menuBar = new MenuBar();

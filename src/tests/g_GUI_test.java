@@ -67,7 +67,7 @@ class g_GUI_test {
 		Random rand = new Random();
 		for (int i = 0; i < 100; i++) {
 			
-			Point3D p = new Point3D(rand.nextInt(700)+100, rand.nextInt(700)+100);
+			Point3D p = new Point3D(rand.nextInt(600)+100, rand.nextInt(600)+100);
 			graph.addNode(new vertex(i,p));
 		}
 		Collection<node_data> nd = graph.getV();
