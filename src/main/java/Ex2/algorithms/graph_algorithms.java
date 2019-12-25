@@ -1,4 +1,4 @@
-package algorithms;
+package main.java.Ex2.algorithms;
 /**
  * This interface represents the "regular" Graph Theory algorithms including:
  * 0. clone();
@@ -14,8 +14,8 @@ package algorithms;
 
 import java.util.List;
 
-import dataStructure.graph;
-import dataStructure.node_data;
+import main.java.Ex2.dataStructure.graph;
+import main.java.Ex2.dataStructure.node_data;
 
 public interface graph_algorithms {
 	/**

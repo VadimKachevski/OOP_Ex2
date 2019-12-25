@@ -1,16 +1,17 @@
-package tests;
-import algorithms.*;
+package test.java.Ex2.graphs_GUI;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collection;
 import java.util.Random;
 
 import org.junit.jupiter.api.Test;
-import dataStructure.*;
-import graphs_GUI.g_GUI;
-import utils.Point3D;
 
-class g_GUI_test {
+import main.java.Ex2.algorithms.*;
+import main.java.Ex2.dataStructure.*;
+import main.java.Ex2.graphs_GUI.g_GUI;
+import main.java.Ex2.utils.Point3D;
+
+class g_GUITest {
 
 	public static void main(String[] args) {
 		testmaybe();
@@ -59,7 +60,7 @@ class g_GUI_test {
 		Graph_Algo GA = new Graph_Algo();
 		g_GUI gui = new g_GUI(gggg);
 	//	GA.init(gggg);
-		System.out.println();
+		//System.out.println();
 	}
 	static graph graphFactory()
 	{

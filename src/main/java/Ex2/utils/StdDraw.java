@@ -1,4 +1,4 @@
-package utils;
+package main.java.Ex2.utils;
 
 //package stdDraw;
 // https://introcs.cs.princeton.edu/java/stdlib/StdDraw.java.html

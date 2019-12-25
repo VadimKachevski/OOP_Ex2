@@ -1,4 +1,4 @@
-package tests;
+package test.java.Ex2.algorithms;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -11,14 +11,14 @@ import java.util.Random;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import algorithms.Graph_Algo;
-import dataStructure.DGraph;
-import dataStructure.graph;
-import dataStructure.node_data;
-import dataStructure.vertex;
-import utils.Point3D;
+import main.java.Ex2.algorithms.Graph_Algo;
+import main.java.Ex2.dataStructure.DGraph;
+import main.java.Ex2.dataStructure.graph;
+import main.java.Ex2.dataStructure.node_data;
+import main.java.Ex2.dataStructure.vertex;
+import main.java.Ex2.utils.Point3D;
 
-class Graph_AlgoJUNIT {
+class Graph_AlgoTest {
 
 	Graph_Algo a = new Graph_Algo();
 	@BeforeEach

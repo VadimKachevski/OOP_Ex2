@@ -1,4 +1,4 @@
-package dataStructure;
+package main.java.Ex2.dataStructure;
 
 import java.io.Serializable;
 import java.util.Collection;

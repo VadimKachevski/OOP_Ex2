@@ -1,6 +1,7 @@
-package tests;
-import dataStructure.*;
-import utils.Point3D;
+package test.java.Ex2.dataStructure;
+import main.java.Ex2.algorithms.Graph_Algo;
+import main.java.Ex2.dataStructure.*;
+import main.java.Ex2.utils.Point3D;
 
 import static org.junit.Assert.fail;
 import static org.junit.jupiter.api.Assertions.*;
@@ -8,9 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import algorithms.Graph_Algo;
-
-class DGraphJUNIT {
+class DGraphTest {
 
 	private DGraph graph;
 	

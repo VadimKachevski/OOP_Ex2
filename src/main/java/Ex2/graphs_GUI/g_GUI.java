@@ -1,7 +1,7 @@
-package graphs_GUI;
-import dataStructure.*;
-import utils.Point3D;
-import algorithms.*;
+package main.java.Ex2.graphs_GUI;
+import main.java.Ex2.algorithms.*;
+import main.java.Ex2.dataStructure.*;
+import main.java.Ex2.utils.Point3D;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
