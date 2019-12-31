@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Collection;
 import java.util.Random;
 
+import com.sun.source.tree.AssertTree;
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import Ex2.algorithms.*;
@@ -50,8 +52,6 @@ class g_GUITest {
 		gg.init(g);
 		double ee = gg.shortestPathDist(1, 6);
 		System.out.println(ee);
-		
-		
 	}
 	@Test
 	static void testmaybe()
@@ -87,4 +87,11 @@ class g_GUITest {
 		}
 		return graph;
 	}
+	@Test
+	void AssertTrue()
+	{
+		boolean t = true;
+		Assert.assertTrue( t );
+	}
+
 }

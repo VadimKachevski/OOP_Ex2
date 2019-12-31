@@ -98,7 +98,7 @@ public class DGraph implements graph,Serializable{
 
 	@Override
 	public edge_data removeEdge(int src, int dest) {
-		MC++;
+		//MC++;
 		node_data vert = vertexs.get(src);
 		edge_data ans =  edgesPerVertex.get(vert).remove(dest);
 		if(ans!= null){
