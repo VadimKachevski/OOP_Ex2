@@ -1,4 +1,4 @@
-package Ex2.graphs_GUI;
+package Ex2.gui;
 
 import Ex2.algorithms.Graph_Algo;
 import Ex2.dataStructure.edge_data;

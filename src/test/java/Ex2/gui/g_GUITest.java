@@ -1,16 +1,13 @@
-package Ex2.graphs_GUI;
-import static org.junit.jupiter.api.Assertions.*;
+package Ex2.gui;
 
 import java.util.Collection;
 import java.util.Random;
 
-import com.sun.source.tree.AssertTree;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import Ex2.algorithms.*;
 import Ex2.dataStructure.*;
-import Ex2.graphs_GUI.g_GUI;
 import Ex2.utils.Point3D;
 
 class g_GUITest {
@@ -75,14 +72,13 @@ class g_GUITest {
 		for (node_data node_data : nd) {
 			int amount_of_edegs = rand.nextInt(5);
 			for (int i = 0; i < amount_of_edegs; i++) {
-				int dest = rand.nextInt(100);
-				while(dest == node_data.getKey())
-				{
-					dest = rand.nextInt(100);
+				int dest = rand.nextInt( 100 );
+				while (dest == node_data.getKey( )) {
+					dest = rand.nextInt( 100 );
 				}
-				int weight = rand.nextInt(20);
+				int weight = rand.nextInt( 20 );
 				//weight*= 10;
-				graph.connect(node_data.getKey(), dest, weight);
+				graph.connect( node_data.getKey( ), dest, weight );
 			}
 		}
 		return graph;

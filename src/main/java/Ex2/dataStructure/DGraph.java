@@ -46,9 +46,11 @@ public class DGraph implements graph,Serializable{
 
 	@Override
 	public void addNode(node_data n) {
-		MC++;
-			vertexs.put(n.getKey(), n);
-			edgesPerVertex.put(n, new Hashtable<Integer, edge_data>());
+		if(n!= null) {
+            MC++;
+            vertexs.put( n.getKey( ), n );
+            edgesPerVertex.put( n, new Hashtable<Integer, edge_data>( ) );
+        }
 	}
 
 	@Override

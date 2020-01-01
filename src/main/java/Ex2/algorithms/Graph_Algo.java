@@ -24,7 +24,13 @@ public class Graph_Algo implements graph_algorithms,Serializable{
 	private static final long serialVersionUID = -6198391308540997339L;
 	graph graph;
 
-	
+
+	public Graph_Algo(graph g)
+	{
+		this.graph = g;
+	}
+
+
 	public Graph_Algo() {
 		this.graph = new DGraph();
 	}
